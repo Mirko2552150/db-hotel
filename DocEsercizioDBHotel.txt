@@ -1,0 +1,28 @@
+1.
+SELECT * FROM `ospiti` 
+WHERE `document_type` = 'CI';
+2.
+SELECT * FROM `ospiti` 
+WHERE `date_of_birth` > '1988';
+3. 
+SELECT * FROM `ospiti` 
+WHERE `date_of_birth` >= '2000-05';
+4. 
+SELECT * FROM `ospiti` 
+WHERE `name` LIKE 'd%';
+5.
+SELECT SUM(price) AS `SOMMA PAGAMENTI ACCETTATI`
+FROM pagamenti
+WHERE status = 'accepted';
+6.
+SELECT `price` AS `PAGAMENTO PIU ALTO`
+FROM `pagamenti`
+ORDER BY price DESC
+LIMIT 1;
+7.
+SELECT * FROM `ospiti`
+WHERE `document_type` = 'Driver License'
+AND `date_of_birth` LIKE '1975%';
+8.
+SELECT SUM(beds) AS `NUMERO STANZE TOTALE`
+FROM `stanze`;
