@@ -1,28 +1,95 @@
 1.
 SELECT * FROM `ospiti` 
 WHERE `document_type` = 'CI';
+
 2.
 SELECT * FROM `ospiti` 
 WHERE `date_of_birth` > '1988';
+commento --- YEAR(`date_of_birth`) > '1988' ---
+
 3. 
 SELECT * FROM `ospiti` 
-WHERE `date_of_birth` >= '2000-05';
+WHERE `date_of_birth` <= '2000-05';
+
 4. 
 SELECT * FROM `ospiti` 
 WHERE `name` LIKE 'd%';
+
 5.
 SELECT SUM(price) AS `SOMMA PAGAMENTI ACCETTATI`
 FROM pagamenti
 WHERE status = 'accepted';
+
 6.
+commento --- SELECT MAX(`price`) ---
 SELECT `price` AS `PAGAMENTO PIU ALTO`
 FROM `pagamenti`
+WHERE status = 'accepted'
 ORDER BY price DESC
 LIMIT 1;
+
 7.
 SELECT * FROM `ospiti`
 WHERE `document_type` = 'Driver License'
 AND `date_of_birth` LIKE '1975%';
+
 8.
 SELECT SUM(beds) AS `NUMERO STANZE TOTALE`
 FROM `stanze`;
+
+● Conta gli ospiti raggruppandoli per anno di nascita
+
+9.
+SELECT COUNT(`id`) AS 'anno di nascita', YEAR(`date_of_birth`) FROM `ospiti`
+GROUP BY YEAR(`date_of_birth`);
+
+● Somma i prezzi dei pagamenti raggruppandoli per status
+
+10.
+SELECT SUM(`price`) AS 'somma', `status` AS 'stato' FROM `pagamenti` 
+GROUP BY `status`
+
+● Conta quante volte è stata prenotata ogni stanza
+
+11.
+SELECT stanza_id AS 'numero stanza', count(id) AS 'numero prenotazini'
+FROM prenotazioni
+GROUP BY stanza_id
+
+● Fai una analisi per vedere se ci sono ore in cui le prenotazioni sono più frequenti
+
+12.
+SELECT TIME_FORMAT(created_at, "%h %p") AS 'ora prenotazione', count(id) 'numero prenotazioni'
+FROM prenotazioni
+GROUP BY TIME_FORMAT(created_at, "%h %p")
+ORDER BY count(id) DESC
+
+
+● Quante prenotazioni ha fatto l’ospite che ha fatto più prenotazioni?
+
+13. 
+SELECT COUNT(prenotazione_id) AS 'numero prenotazioni', `ospite_id` AS 'identificativo cliente'
+FROM `prenotazioni_has_ospiti`
+GROUP BY `ospite_id`
+ORDER BY (COUNT(prenotazione_id)) DESC
+
+Join
+
+● Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+14.
+SELECT ospiti.name, ospiti.lastname, COUNT(prenotazioni_has_ospiti.prenotazione_id)
+FROM prenotazioni_has_ospiti
+INNER JOIN ospiti
+ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+GROUP BY prenotazioni_has_ospiti.ospite_id
+HAVING COUNT(prenotazioni_has_ospiti.prenotazione_id)>2
+
+● Stampare tutti gli ospiti per ogni prenotazione
+
+15.
+
+● Stampare Nome, Cognome, Prezzo e Pagante per tutte le prenotazioni fatte a Maggio 2018
+● Fai la somma di tutti i prezzi delle prenotazioni per le stanze del primo piano
+● Prendi i dati di fatturazione per la prenotazione con id=7
+● Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
+
