@@ -92,8 +92,7 @@ ON prenotazioni_has_ospiti.ospite_id = ospiti.id
 ● Stampare Nome, Cognome, Prezzo e Pagante per tutte le prenotazioni fatte a Maggio 2018
 
 SELECT paganti.id, paganti.name, paganti.lastname, pagamenti.price, DATE_FORMAT(prenotazioni.created_at, "%Y %m")
-FROM pagamenti 
-INNER JOIN paganti
+FROM pagamenti INNER JOIN paganti
 ON pagamenti.pagante_id = paganti.id
 INNER JOIN prenotazioni
 ON pagamenti.prenotazione_id = prenotazioni.id
@@ -103,8 +102,7 @@ AND MONTH(prenotazioni.created_at) = '05';
 ● Fai la somma di tutti i prezzi delle prenotazioni per le stanze del primo piano
 
 SELECT stanze.floor, SUM(pagamenti.price)
-FROM prenotazioni 
-INNER JOIN pagamenti
+FROM prenotazioni INNER JOIN pagamenti
 ON prenotazioni.id = pagamenti.prenotazione_id
 INNER JOIN stanze
 ON stanze.id = prenotazioni.stanza_id
@@ -124,6 +122,7 @@ WHERE prenotazioni.id = '7'
 ● Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
 
 SELECT stanze.id , stanze.room_number
-FROM stanze LEFT JOIN prenotazioni
+FROM stanze 
+LEFT JOIN prenotazioni
 ON stanze.id = prenotazioni.stanza_id
-where prenotazioni.stanza_id IS NULL
+WHERE prenotazioni.stanza_id IS NULL
